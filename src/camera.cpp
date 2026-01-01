@@ -14,7 +14,7 @@ Camera::Camera()
 	_camForward = XMVector3TransformNormal(baseForward, combinedRot);
 }
 
-XMMATRIX Camera::LookAt()
+XMMATRIX Camera::LookAt() const
 {
 	XMVECTOR eyePos = _camPos - (_camForward * _zoom);
 	return XMMatrixLookAtLH(eyePos, _camPos, _camUp);

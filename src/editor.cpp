@@ -172,7 +172,7 @@ void TGW::Editor::Update()
 	_matView = _camera.LookAt();
 	std::vector<TGW::GUI::AssetMetadata> assetsMetadata;
 	for (const auto &model : _models) {
-		assetsMetadata.push_back(TGW::GUI::AssetMetadata{model.name});
+		assetsMetadata.push_back(TGW::GUI::AssetMetadata{model.id, model.name});
 	}
 	_gui->Update(TGW::GUI::EditorMetadata{assetsMetadata});
 	ProcessUICommands();
@@ -223,12 +223,16 @@ void TGW::Editor::ProcessUICommands()
 				if constexpr (std::is_same_v<T, LoadModelCommand>) {
 					auto newModel = AssetLoader::LoadModel(_device.Get(), arg.path);
 					if (newModel) {
-						_models.clear();
+						// TODO: find a better way to set an id for the model
+						newModel.value().id = _models.size(); 
 						_models.push_back(std::move(newModel.value()));
 					}
+				} else if constexpr (std::is_same_v<T, SelectModelCommand>) {
+					const DirectX::XMVECTOR modelPos = DirectX::XMLoadFloat3(&_models[arg.id].position);
+					_camera.SetTarget(modelPos);
 				}
 			},
 			cmd);
 	}
-	_uiCommandQueue.clear(); // Clear for the next frame
+	_uiCommandQueue.clear();
 }

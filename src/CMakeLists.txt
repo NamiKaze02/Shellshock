@@ -12,6 +12,7 @@ set(HEADER_FILES
     actions.h
     asset_loader.h
     camera.h
+    metadata.h
     editor.h
     model.h
     log.h

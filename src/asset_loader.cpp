@@ -37,6 +37,7 @@ std::optional<Model> AssetLoader::LoadModel(ID3D11Device *device, std::string_vi
 
 	Model model;
 	model.name = fsPath.filename().string();
+	model.position = DirectX::XMFLOAT3{0, 0, 0};
 	for (uint32_t i = 0; i < scene->mNumMaterials; i++) {
 		model.materials.push_back(LoadMaterial(device, scene->mMaterials[i], basePath));
 	}

@@ -5,11 +5,12 @@
 class Camera {
   public:
 	Camera();
-	DirectX::XMMATRIX LookAt();
+	DirectX::XMMATRIX LookAt() const;
 	void HandleMouse(HWND hwnd);
 	void HandleZoom(short delta);
 	
 	inline float GetAngle() { return _angle; }
+	inline void SetTarget(DirectX::FXMVECTOR pos) { _camPos = pos; }
 
   private:
 	DirectX::XMVECTOR _camPos;

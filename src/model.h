@@ -32,6 +32,8 @@ struct Material {
 
 struct Model {
 	std::string name;
+	UINT id;
+	DirectX::XMFLOAT3 position;
 	std::vector<Mesh> meshes;
 	std::vector<Material> materials;
 };

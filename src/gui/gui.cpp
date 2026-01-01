@@ -188,8 +188,7 @@ void TGW::GUI::EditorMain::UpdateAssets(const EditorMetadata &editorMetadata)
 				ImGui::TableSetColumnIndex(0);
 				bool selected = false; //TODO: track this in EditorMetadata
 				if (ImGui::Selectable(asset.name.c_str(), selected, ImGuiSelectableFlags_SpanAllColumns)) {
-					// TODO: Send a command to the Editor to select this model
-					// _queue.push_back(EditorCommand{SelectModelCommand{asset.id}});
+					_queue.push_back(EditorCommand{SelectModelCommand{asset.id}});
 				}
 			}
 			ImGui::EndTable();
