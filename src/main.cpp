@@ -19,6 +19,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			editor->GetCamera().HandleZoom(wheelDelta);
 		}
 		return FALSE;
+	case WM_SIZE:
+		if (editor && wParam != SIZE_MINIMIZED) {
+			UINT width = LOWORD(lParam);
+			UINT height = HIWORD(lParam);
+			editor->Resize(width, height);
+		}
+		return 0;
 	case WM_PAINT:
 		if (editor) {
 			editor->Update();

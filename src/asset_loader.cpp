@@ -1,6 +1,7 @@
 #include "asset_loader.h"
 #include "texture_wic.h"
 #include "utility.h"
+#include "log.h"
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -26,10 +27,8 @@ std::optional<Model> AssetLoader::LoadModel(ID3D11Device *device, std::string_vi
 		importer.ReadFile(path.data(), aiProcess_Triangulate | aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || !scene->HasMeshes()) {
-		// TODO: Change to Imgui log error later
 		std::string errorMsg = std::format("Failed to load model asset.\n\nPath: {}\nError: {}", path, importer.GetErrorString());
-		std::wstring wError(errorMsg.begin(), errorMsg.end());
-		MessageBox(nullptr, wError.c_str(), L"Asset Loading Error", MB_OK | MB_ICONERROR);
+		TGW::Logger::AddLog(errorMsg, TGW::LogType::INFO);
 		return {};
 	}
 

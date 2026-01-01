@@ -5,8 +5,12 @@
 #include <imgui.h>
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
+#include <log.h>
 
 constexpr auto CHOOSE_MODEL_DIALOG_KEY = "ChooseModelKey";
+constexpr auto LOG_WHITE = ImVec4(1, 1, 1, 1);
+
+static ImVec4 LogTypeToColor(TGW::LogType type);
 
 TGW::GUI::Base::~Base()
 {
@@ -57,11 +61,55 @@ void TGW::GUI::EditorMain::Update()
 
 	if (ImGuiFileDialog::Instance()->Display(CHOOSE_MODEL_DIALOG_KEY)) {
 		if (ImGuiFileDialog::Instance()->IsOk()) {
-			if (ImGuiFileDialog::Instance()->IsOk()) {
-				std::string path = ImGuiFileDialog::Instance()->GetFilePathName();
-				_queue.push_back(LoadModelCommand{path});
-			}
+			std::string path = ImGuiFileDialog::Instance()->GetFilePathName();
+			_queue.push_back(LoadModelCommand{path});
+			TGW::Logger::AddLog("Loading model: " + path, TGW::LogType::INFO);
 		}
 		ImGuiFileDialog::Instance()->Close();
 	}
+
+	UpdateLogs();
+	ImGui::End();
+}
+
+void TGW::GUI::EditorMain::UpdateLogs()
+{
+	const ImGuiViewport *viewport = ImGui::GetMainViewport();
+	float logWindowHeight = viewport->WorkSize.y * 0.20f;
+	ImGui::SetNextWindowPos(ImVec2(viewport->WorkPos.x, viewport->WorkPos.y + viewport->WorkSize.y - logWindowHeight));
+	ImGui::SetNextWindowSize(ImVec2(viewport->WorkSize.x, logWindowHeight));
+
+	ImGuiWindowFlags logFlags =
+		ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
+
+	if (ImGui::Begin("LogSession", nullptr, logFlags)) {
+		if (ImGui::Button("Clear")) {
+			TGW::Logger::Clear();
+		}
+		ImGui::SameLine();
+		ImGui::TextUnformatted("Application Logs");
+		ImGui::Separator();
+
+		const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+		ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
+
+		for (const auto &log : TGW::Logger::GetAll()) {
+			ImGui::TextColored(LogTypeToColor(log.type) , log.AsString().c_str());
+		}
+
+		if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()) {
+			ImGui::SetScrollHereY(1.0f);
+		}
+
+		ImGui::EndChild();
+	}
+}
+
+static ImVec4 LogTypeToColor(TGW::LogType type)
+{
+	switch (type) {
+	case TGW::LogType::INFO:
+		return LOG_WHITE;
+	}
+	return LOG_WHITE;
 }

@@ -6,6 +6,7 @@
 #include <variant>
 
 #include <d3dcompiler.h>
+#include <log.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
@@ -48,8 +49,8 @@ void TGW::Editor::Init(HWND hwnd)
 	backbuffer->Release();
 
 	D3D11_VIEWPORT vp = {};
-	vp.Width = (float)width;
-	vp.Height = (float)height;
+	vp.Width = static_cast<float>(width);
+	vp.Height = static_cast<float>(height);
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	_context->RSSetViewports(1, &vp);
@@ -78,6 +79,44 @@ void TGW::Editor::Init(HWND hwnd)
 	_gui = std::make_unique<TGW::GUI::EditorMain>(_uiCommandQueue);
 
 	LoadAssets();
+}
+
+void TGW::Editor::Resize(UINT width, UINT height)
+{
+	if (!_device || !_swapchain) {
+		return;
+	}
+
+	_rtv.Reset();
+	_dsv.Reset();
+	_context->OMSetRenderTargets(0, nullptr, nullptr);
+
+	ASSERT_SUCCEEDED(_swapchain->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0));
+
+	ID3D11Texture2D *backBuffer;
+	ASSERT_SUCCEEDED(_swapchain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void **)&backBuffer));
+	ASSERT_SUCCEEDED(_device->CreateRenderTargetView(backBuffer, nullptr, &_rtv));
+	backBuffer->Release();
+
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.Width = width;
+	textureDesc.Height = height;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+	ComPtr<ID3D11Texture2D> depthBuffer;
+	ASSERT_SUCCEEDED(_device->CreateTexture2D(&textureDesc, nullptr, depthBuffer.GetAddressOf()));
+	ASSERT_SUCCEEDED(_device->CreateDepthStencilView(depthBuffer.Get(), nullptr, &_dsv));
+
+	D3D11_VIEWPORT viewport = {0, 0, static_cast<float>(width), static_cast<float>(height), 0.0f, 1.0f};
+	_context->RSSetViewports(1, &viewport);
+
+	float aspect = viewport.Width / viewport.Height;
+	_matProj = XMMatrixPerspectiveFovLH(_camera.GetAngle(), aspect, 0.1f, 100.0f);
 }
 
 void TGW::Editor::Render()

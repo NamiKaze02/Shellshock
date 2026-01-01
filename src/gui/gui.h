@@ -20,10 +20,10 @@ class Base {
 class EditorMain : public Base {
   public:
 	EditorMain(std::vector<EditorCommand> &commandQueue) : _queue(commandQueue) {}
-
 	void Update() override;
 
   private:
+	void UpdateLogs();
 	std::vector<EditorCommand> &_queue;
 };
-}
+} // namespace TGW::GUI

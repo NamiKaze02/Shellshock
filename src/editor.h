@@ -17,6 +17,7 @@ class Editor {
   public:
 	Editor() {}
 	void Init(HWND hwnd);
+	void Resize(UINT width, UINT height);
 	void Render();
 	void DrawModel(const Model &model);
 	void Update();
@@ -51,4 +52,4 @@ class Editor {
 
 	std::vector<EditorCommand> _uiCommandQueue;
 };
-}
+} // namespace TGW
