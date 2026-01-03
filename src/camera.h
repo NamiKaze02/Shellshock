@@ -10,12 +10,12 @@ class Camera {
 	void HandleZoom(short delta);
 	
 	inline float GetAngle() { return _angle; }
-	inline void SetTarget(DirectX::FXMVECTOR pos) { _camPos = pos; }
+	inline void SetTarget(DirectX::FXMVECTOR pos) { _position = pos; }
 
   private:
-	DirectX::XMVECTOR _camPos;
-	DirectX::XMVECTOR _camForward;
-	DirectX::XMVECTOR _camUp;
+	DirectX::XMVECTOR _position;
+	DirectX::XMVECTOR _forward;
+	DirectX::XMVECTOR _up;
 
 	float _speed;
 	float _zoom;

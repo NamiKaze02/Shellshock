@@ -3,6 +3,7 @@
 #include "shaders.h"
 #include "utility.h"
 #include <variant>
+#include <array>
 
 #include <d3dcompiler.h>
 #include <log.h>
@@ -151,10 +152,11 @@ void TGW::Editor::DrawModel(const Model &model)
 {
 	for (const auto &mesh : model.meshes) {
 		const Material &material = model.materials[mesh.materialIndex];
-		ID3D11ShaderResourceView *srvs[4] = {
+		std::array<ID3D11ShaderResourceView *, 4> srvs = {
 		  material.diffuse ? material.diffuse.Get() : nullptr, material.specular ? material.specular.Get() : nullptr,
 		  material.normal ? material.normal.Get() : nullptr, material.roughness ? material.roughness.Get() : nullptr};
-		_context->PSSetShaderResources(0, 4, srvs);
+		
+		_context->PSSetShaderResources(0, srvs.size(), srvs.data());
 
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
