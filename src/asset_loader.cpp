@@ -92,7 +92,8 @@ Mesh LoadMesh(ID3D11Device *device, const aiMesh *mesh)
 	return out;
 }
 
-ComPtr<ID3D11ShaderResourceView> LoadMaterialTexture(ID3D11Device *device, const aiScene *scene, aiString aiTexPath, std::string_view basePath)
+ComPtr<ID3D11ShaderResourceView>
+LoadMaterialTexture(ID3D11Device *device, const aiScene *scene, aiString aiTexPath, std::string_view basePath)
 {
 	if (const aiTexture *embeddedTex = scene->GetEmbeddedTexture(aiTexPath.C_Str())) {
 		const BOOL isCompressed = embeddedTex->mHeight == 0;

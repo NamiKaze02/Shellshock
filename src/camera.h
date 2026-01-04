@@ -22,6 +22,9 @@ class Camera {
 	float _minZoom;
 	float _maxZoom;
 	float _angle;
+	float _moveSensitivity;
+	float _zoomSensitivity;
+	int _edgeSize;
 
 	POINT _lastMousePos;
 };

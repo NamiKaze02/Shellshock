@@ -13,8 +13,7 @@
 constexpr auto MASTER_DOCKSPACE_ID = "MasterDockspace";
 constexpr auto CHOOSE_MODEL_DIALOG_KEY = "ChooseModelKey";
 constexpr auto LOG_WHITE = ImVec4(1, 1, 1, 1);
-
-static constexpr std::array<ImVec4, static_cast<size_t>(TGW::LogType::NUM_LOG_TYPES)> LOG_COLORS = {
+constexpr std::array<ImVec4, static_cast<size_t>(TGW::LogType::NUM_LOG_TYPES)> LOG_COLORS = {
   LOG_WHITE,
 };
 

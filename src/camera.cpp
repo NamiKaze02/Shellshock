@@ -3,9 +3,13 @@
 
 using namespace DirectX;
 
+// Most significant bit of SHORT returned by GetAsyncKeyState
+constexpr auto IS_KEY_DOWN_MASK = 0x8000;
+
 Camera::Camera()
 	: _position{XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f)}, _up{XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)}, _zoom{10.0f}, _minZoom{5.0f},
-	  _maxZoom{15.0f}, _angle{XM_PIDIV4}, _speed{0.15f}, _lastMousePos{0, 0}
+	  _maxZoom{15.0f}, _angle{XM_PIDIV4}, _speed{0.15f}, _lastMousePos{0, 0}, _moveSensitivity{0.005f}, _edgeSize{30},
+	  _zoomSensitivity{2.0f}
 {
 	XMVECTOR baseForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMMATRIX rotPitch = XMMatrixRotationX(_angle);
@@ -31,14 +35,11 @@ void Camera::HandleMouse(HWND hwnd)
 	GetCursorPos(&cursorPosition);
 	ScreenToClient(hwnd, &cursorPosition);
 
-	if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
+	if (GetAsyncKeyState(VK_MBUTTON) & IS_KEY_DOWN_MASK) {
 		float dx = static_cast<float>(cursorPosition.x - _lastMousePos.x);
-		float sensitivity = 0.005f;
-		XMMATRIX rotY = XMMatrixRotationY(dx * sensitivity);
-		_forward = XMVector3TransformNormal(_forward, rotY);
-		_forward = XMVector3Normalize(_forward);
+		XMMATRIX rotY = XMMatrixRotationY(dx * _moveSensitivity);
+		_forward = XMVector3Normalize(XMVector3TransformNormal(_forward, rotY));
 	} else {
-		const int edgeSize = 30;
 		const int width = rect.right - rect.left;
 		const int height = rect.bottom - rect.top;
 
@@ -46,15 +47,15 @@ void Camera::HandleMouse(HWND hwnd)
 		XMVECTOR worldUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 		XMVECTOR normRight = XMVector3Cross(worldUp, normForward);
 
-		if (cursorPosition.x < edgeSize) {
+		if (cursorPosition.x < _edgeSize) {
 			_position -= normRight * _speed;
-		} else if (cursorPosition.x > width - edgeSize) {
+		} else if (cursorPosition.x > width - _edgeSize) {
 			_position += normRight * _speed;
 		}
 
-		if (cursorPosition.y < edgeSize) {
+		if (cursorPosition.y < _edgeSize) {
 			_position += normForward * _speed;
-		} else if (cursorPosition.y > height - edgeSize) {
+		} else if (cursorPosition.y > height - _edgeSize) {
 			_position -= normForward * _speed;
 		}
 	}
@@ -64,7 +65,6 @@ void Camera::HandleMouse(HWND hwnd)
 
 void Camera::HandleZoom(short wheelDelta)
 {
-	const float zoomSensitivity = 2.0f;
-	_zoom -= (static_cast<float>(wheelDelta) / WHEEL_DELTA) * zoomSensitivity;
+	_zoom -= (static_cast<float>(wheelDelta) / WHEEL_DELTA) * _zoomSensitivity;
 	_zoom = std::clamp(_zoom, _minZoom, _maxZoom);
 }
